@@ -1,13 +1,20 @@
+usersContainer = document.querySelector("div.container div#users");
 tableUsers = document.querySelector("div.container div#users table");
-buttonElementUsers = document.querySelector("div.container div#users button");
-inputElementUsers = document.querySelector("div.container div#users input");
+buttonElementUsers = document.querySelector("div.container div#users form button");
+inputElementUsers = document.querySelector("div.container div#users form input");
+formUsers = document.querySelector("div.container div#users form");
 
+linkElementUsers = document.querySelector("div.container div#sidebar #linkUsers");
+linkElementBooks = document.querySelector("div.container div#sidebar #linkBooks");
+
+booksContainer = document.querySelector("div.container div#books");
 tableBooks = document.querySelector("div.container div#books table");
-buttonElementBooks = document.querySelector("div.container div#books button");
-inputElementBooks = document.querySelector("div.container div#books input");
+buttonElementBooks = document.querySelector("div.container div#books form button");
+inputElementBooks = document.querySelector("div.container div#books form input");
+formBooks = document.querySelector("div.container div#books form");
 
-var users = [];
-var books = [];
+var users = JSON.parse(localStorage.getItem('users')) || [];
+var books = JSON.parse(localStorage.getItem('books')) || [];
 
 function renderUsersElements() {
     var content = `<tbody><tr>
@@ -65,6 +72,7 @@ buttonElementUsers.onclick = () => {
     var nomeDoUsuário = inputElementUsers.value;
     users.push(nomeDoUsuário);
     inputElementUsers.value = '';
+    saveUsersToStorage();
     renderUsersElements();
 }
 
@@ -72,8 +80,35 @@ buttonElementBooks.onclick = () => {
     var nomeDoLivro = inputElementBooks.value;
     books.push(nomeDoLivro);
     inputElementBooks.value = '';
+    saveBooksToStorage();
     renderBooksElements();
 }
 
-renderBooksElements();
-renderUsersElements();
+linkElementUsers.onclick = () => {
+    booksContainer.style.visibility = "visible";
+    usersContainer.style.visibility = "visible";
+    formUsers.style.visibility = "visible";
+    formBooks.style.visibility = "hidden";
+    renderUsersElements();
+    renderBooksElements();
+}
+
+linkElementBooks.onclick = () => {
+    booksContainer.style.visibility = "visible";
+    usersContainer.style.visibility = "visible";
+    formBooks.style.visibility = "visible";
+    formUsers.style.visibility = "hidden";
+    renderUsersElements();
+    renderBooksElements();
+}
+
+function saveUsersToStorage(){
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function saveBooksToStorage(){
+    localStorage.setItem('books', JSON.stringify(books));
+}
+
+booksContainer.style.visibility = "hidden";
+usersContainer.style.visibility = "hidden";
